@@ -31,10 +31,20 @@ export async function requestOtp(
     };
   }
 
+  const redirectTo = String(formData.get('redirect_to') ?? '') || '/dashboard';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
-    options: { shouldCreateUser: true },
+    options: {
+      shouldCreateUser: true,
+      // Powers the "Sign in" link in the email — lets people skip typing
+      // the 6-digit code entirely and just click through instead. Points
+      // at our callback route, which exchanges the code for a session
+      // and then continues on to wherever they were originally headed.
+      emailRedirectTo: `${appUrl}/auth/callback?redirect_to=${encodeURIComponent(redirectTo)}`,
+    },
   });
 
   if (error) {
