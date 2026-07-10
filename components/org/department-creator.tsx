@@ -5,9 +5,11 @@ import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import {
   createDepartmentAction,
-  ORG_ACTION_INITIAL_STATE,
+  type OrgActionState,
 } from '@/(dashboard)/dashboard/org/actions';
 import type { Department } from '@/types/database.types';
+
+const INITIAL_STATE: OrgActionState = { status: 'idle' };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -30,7 +32,7 @@ export function DepartmentCreator({
   departments: Department[];
 }) {
   const boundAction = createDepartmentAction.bind(null, organizationId);
-  const [state, formAction] = useActionState(boundAction, ORG_ACTION_INITIAL_STATE);
+  const [state, formAction] = useActionState(boundAction, INITIAL_STATE);
 
   return (
     <div className="space-y-3">

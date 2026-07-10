@@ -4,9 +4,11 @@
 import { useActionState, useEffect, useState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Check } from 'lucide-react';
-import { completeOnboarding, checkSlugAvailability, ONBOARDING_INITIAL_STATE } from '@/onboarding/actions';
+import { completeOnboarding, checkSlugAvailability, type OnboardingState } from '@/onboarding/actions';
 import { cn, slugify } from '@/lib/utils';
 import type { Theme } from '@/types/database.types';
+
+const INITIAL_STATE: OnboardingState = { status: 'idle' };
 
 const STEPS = ['Basics', 'Your link', 'Theme'] as const;
 
@@ -39,7 +41,7 @@ export function OnboardingWizard({ cardId, themes, defaultEmail }: OnboardingWiz
   const [, startSlugCheck] = useTransition();
 
   const boundAction = completeOnboarding.bind(null, cardId);
-  const [state, formAction] = useActionState(boundAction, ONBOARDING_INITIAL_STATE);
+  const [state, formAction] = useActionState(boundAction, INITIAL_STATE);
 
   useEffect(() => {
     if (!slugTouched) {

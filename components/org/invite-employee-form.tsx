@@ -3,8 +3,10 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { inviteEmployeeAction, ORG_ACTION_INITIAL_STATE } from '@/(dashboard)/dashboard/org/actions';
+import { inviteEmployeeAction, type OrgActionState } from '@/(dashboard)/dashboard/org/actions';
 import type { Department } from '@/types/database.types';
+
+const INITIAL_STATE: OrgActionState = { status: 'idle' };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -27,7 +29,7 @@ export function InviteEmployeeForm({
   departments: Department[];
 }) {
   const boundAction = inviteEmployeeAction.bind(null, organizationId);
-  const [state, formAction] = useActionState(boundAction, ORG_ACTION_INITIAL_STATE);
+  const [state, formAction] = useActionState(boundAction, INITIAL_STATE);
 
   return (
     <form action={formAction} className="flex flex-wrap items-end gap-3">

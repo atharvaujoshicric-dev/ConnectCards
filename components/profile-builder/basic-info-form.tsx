@@ -3,8 +3,10 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { updateBasicInfo, PROFILE_FORM_INITIAL_STATE } from '@/(dashboard)/dashboard/profile/actions';
+import { updateBasicInfo, type ProfileFormState } from '@/(dashboard)/dashboard/profile/actions';
 import type { Profile } from '@/types/database.types';
+
+const INITIAL_STATE: ProfileFormState = { status: 'idle' };
 
 function SaveButton() {
   const { pending } = useFormStatus();
@@ -20,7 +22,7 @@ function SaveButton() {
 }
 
 export function BasicInfoForm({ profile }: { profile: Profile }) {
-  const [state, formAction] = useActionState(updateBasicInfo, PROFILE_FORM_INITIAL_STATE);
+  const [state, formAction] = useActionState(updateBasicInfo, INITIAL_STATE);
 
   return (
     <form action={formAction} className="space-y-4">

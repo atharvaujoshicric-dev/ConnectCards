@@ -7,9 +7,11 @@ import Link from 'next/link';
 import { Lock } from 'lucide-react';
 import {
   updateContactExtras,
-  PROFILE_FORM_INITIAL_STATE,
+  type ProfileFormState,
 } from '@/(dashboard)/dashboard/profile/actions';
 import type { Profile } from '@/types/database.types';
+
+const INITIAL_STATE: ProfileFormState = { status: 'idle' };
 
 function SaveButton() {
   const { pending } = useFormStatus();
@@ -25,7 +27,7 @@ function SaveButton() {
 }
 
 export function ContactExtrasForm({ profile, isProOrAbove }: { profile: Profile; isProOrAbove: boolean }) {
-  const [state, formAction] = useActionState(updateContactExtras, PROFILE_FORM_INITIAL_STATE);
+  const [state, formAction] = useActionState(updateContactExtras, INITIAL_STATE);
 
   if (!isProOrAbove) {
     return (

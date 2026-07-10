@@ -3,8 +3,10 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { activateCardAction, ACTIVATE_INITIAL_STATE } from '@/a/[token]/actions';
+import { activateCardAction, type ActivateCardState } from '@/a/[token]/actions';
 import { Button } from '@/components/ui/button';
+
+const INITIAL_STATE: ActivateCardState = { status: 'idle' };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -17,7 +19,7 @@ function SubmitButton() {
 
 export function ActivateButton({ activationToken }: { activationToken: string }) {
   const boundAction = activateCardAction.bind(null, activationToken);
-  const [state, formAction] = useActionState(boundAction, ACTIVATE_INITIAL_STATE);
+  const [state, formAction] = useActionState(boundAction, INITIAL_STATE);
 
   return (
     <form action={formAction} className="space-y-4">

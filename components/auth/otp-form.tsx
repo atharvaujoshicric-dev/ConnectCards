@@ -4,9 +4,11 @@
 import { useActionState, useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useSearchParams } from 'next/navigation';
-import { requestOtp, verifyOtp, OTP_INITIAL_STATE } from '@/(auth)/actions';
+import { requestOtp, verifyOtp, type OtpActionState } from '@/(auth)/actions';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+const INITIAL_STATE: OtpActionState = { status: 'idle' };
 
 function SubmitButton({ children }: { children: React.ReactNode }) {
   const { pending } = useFormStatus();
@@ -21,8 +23,8 @@ export function OtpForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect_to') ?? '/dashboard';
 
-  const [requestState, requestAction] = useActionState(requestOtp, OTP_INITIAL_STATE);
-  const [verifyState, verifyActionDispatch] = useActionState(verifyOtp, OTP_INITIAL_STATE);
+  const [requestState, requestAction] = useActionState(requestOtp, INITIAL_STATE);
+  const [verifyState, verifyActionDispatch] = useActionState(verifyOtp, INITIAL_STATE);
   const [step, setStep] = useState<'email' | 'code'>('email');
 
   const activeState = step === 'email' ? requestState : verifyState;

@@ -5,9 +5,11 @@ import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import {
   updateNotificationPreferencesAction,
-  SETTINGS_ACTION_INITIAL_STATE,
+  type SettingsActionState,
 } from '@/(dashboard)/dashboard/settings/actions';
 import type { NotificationPreferences } from '@/types/database.types';
+
+const INITIAL_STATE: SettingsActionState = { status: 'idle' };
 
 function SaveButton() {
   const { pending } = useFormStatus();
@@ -25,7 +27,7 @@ function SaveButton() {
 export function NotificationPreferencesForm({ preferences }: { preferences: NotificationPreferences | null }) {
   const [state, formAction] = useActionState(
     updateNotificationPreferencesAction,
-    SETTINGS_ACTION_INITIAL_STATE,
+    INITIAL_STATE,
   );
 
   return (

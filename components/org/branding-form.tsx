@@ -3,8 +3,10 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { updateBrandingAction, ORG_ACTION_INITIAL_STATE } from '@/(dashboard)/dashboard/org/actions';
+import { updateBrandingAction, type OrgActionState } from '@/(dashboard)/dashboard/org/actions';
 import type { Organization } from '@/types/database.types';
+
+const INITIAL_STATE: OrgActionState = { status: 'idle' };
 
 function SaveButton() {
   const { pending } = useFormStatus();
@@ -21,7 +23,7 @@ function SaveButton() {
 
 export function BrandingForm({ organization }: { organization: Organization }) {
   const boundAction = updateBrandingAction.bind(null, organization.id);
-  const [state, formAction] = useActionState(boundAction, ORG_ACTION_INITIAL_STATE);
+  const [state, formAction] = useActionState(boundAction, INITIAL_STATE);
 
   return (
     <form action={formAction} className="space-y-4">

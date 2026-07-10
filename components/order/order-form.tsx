@@ -3,8 +3,10 @@
 
 import { useActionState, useMemo, useState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { createOrderAction, CREATE_ORDER_INITIAL_STATE } from '@/order/actions';
+import { createOrderAction, type CreateOrderState } from '@/order/actions';
 import { calculateCardUnitPrice, formatCurrency, cn } from '@/lib/utils';
+
+const INITIAL_STATE: CreateOrderState = { status: 'idle' };
 
 const CARD_COLORS = [
   { value: 'gold', label: 'Gold', hex: '#C9A24B' },
@@ -31,7 +33,7 @@ export function OrderForm() {
   const [quantity, setQuantity] = useState(1);
   const [orderType, setOrderType] = useState<'individual' | 'organization'>('individual');
 
-  const [state, formAction] = useActionState(createOrderAction, CREATE_ORDER_INITIAL_STATE);
+  const [state, formAction] = useActionState(createOrderAction, INITIAL_STATE);
 
   const unitPrice = useMemo(() => calculateCardUnitPrice(quantity), [quantity]);
   const subtotal = unitPrice * quantity;

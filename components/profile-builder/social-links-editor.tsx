@@ -7,9 +7,11 @@ import { X } from 'lucide-react';
 import {
   addSocialLink,
   removeSocialLink,
-  PROFILE_FORM_INITIAL_STATE,
+  type ProfileFormState,
 } from '@/(dashboard)/dashboard/profile/actions';
 import type { SocialLink } from '@/types/database.types';
+
+const INITIAL_STATE: ProfileFormState = { status: 'idle' };
 
 const PLATFORMS = [
   'linkedin', 'instagram', 'twitter', 'facebook', 'youtube',
@@ -30,7 +32,7 @@ function AddButton() {
 }
 
 export function SocialLinksEditor({ links }: { links: SocialLink[] }) {
-  const [state, formAction] = useActionState(addSocialLink, PROFILE_FORM_INITIAL_STATE);
+  const [state, formAction] = useActionState(addSocialLink, INITIAL_STATE);
   const [isPending, startTransition] = useTransition();
 
   return (
