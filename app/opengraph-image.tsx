@@ -21,6 +21,7 @@ export default function OpengraphImage() {
       >
         <div
           style={{
+            display: 'flex',
             fontSize: 32,
             fontWeight: 600,
             color: '#131316',
