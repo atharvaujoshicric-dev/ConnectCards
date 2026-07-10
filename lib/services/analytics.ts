@@ -141,6 +141,8 @@ export async function getTopReferrers(
     .sort((a, b) => b.count - a.count)
     .slice(0, limit);
 }
+
+export interface OrgAnalyticsSummary extends AnalyticsSummary {
   topPerformingProfiles: Array<{ profileId: string; views: number }>;
 }
 
