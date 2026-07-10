@@ -10,8 +10,6 @@ export interface ActivateCardState {
   message?: string;
 }
 
-export const ACTIVATE_INITIAL_STATE: ActivateCardState = { status: 'idle' };
-
 export async function activateCardAction(
   activationToken: string,
   _prevState: ActivateCardState,

@@ -15,8 +15,6 @@ export interface OnboardingState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const ONBOARDING_INITIAL_STATE: OnboardingState = { status: 'idle' };
-
 export async function checkSlugAvailability(rawSlug: string): Promise<{ available: boolean; suggestion?: string }> {
   const supabase = await createClient();
   const slug = slugify(rawSlug);

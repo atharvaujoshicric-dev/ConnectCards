@@ -13,8 +13,6 @@ export interface OtpActionState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const OTP_INITIAL_STATE: OtpActionState = { status: 'idle' };
-
 export async function requestOtp(
   _prevState: OtpActionState,
   formData: FormData,

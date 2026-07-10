@@ -10,8 +10,6 @@ export interface SettingsActionState {
   message?: string;
 }
 
-export const SETTINGS_ACTION_INITIAL_STATE: SettingsActionState = { status: 'idle' };
-
 export async function updateNotificationPreferencesAction(
   _prevState: SettingsActionState,
   formData: FormData,

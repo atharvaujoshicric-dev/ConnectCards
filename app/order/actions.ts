@@ -12,8 +12,6 @@ export interface CreateOrderState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const CREATE_ORDER_INITIAL_STATE: CreateOrderState = { status: 'idle' };
-
 export async function createOrderAction(
   _prevState: CreateOrderState,
   formData: FormData,

@@ -12,8 +12,6 @@ export interface CreateOrgState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const CREATE_ORG_INITIAL_STATE: CreateOrgState = { status: 'idle' };
-
 export async function createOrganizationAction(
   _prevState: CreateOrgState,
   formData: FormData,

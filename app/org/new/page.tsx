@@ -3,7 +3,9 @@
 
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { createOrganizationAction, CREATE_ORG_INITIAL_STATE } from '@/org/new/actions';
+import { createOrganizationAction, type CreateOrgState } from '@/org/new/actions';
+
+const INITIAL_STATE: CreateOrgState = { status: 'idle' };
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -19,7 +21,7 @@ function SubmitButton() {
 }
 
 export default function NewOrganizationPage() {
-  const [state, formAction] = useActionState(createOrganizationAction, CREATE_ORG_INITIAL_STATE);
+  const [state, formAction] = useActionState(createOrganizationAction, INITIAL_STATE);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-secondary/20 px-4">

@@ -16,8 +16,6 @@ export interface ProfileFormState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const PROFILE_FORM_INITIAL_STATE: ProfileFormState = { status: 'idle' };
-
 async function getOwnProfileOrThrow(userId: string) {
   const supabase = await createClient();
   const { data: profile } = await supabase

@@ -17,8 +17,6 @@ export interface OrgActionState {
   fieldErrors?: Record<string, string[]>;
 }
 
-export const ORG_ACTION_INITIAL_STATE: OrgActionState = { status: 'idle' };
-
 async function requireOrgAdmin(organizationId: string) {
   const supabase = await createClient();
   const {
