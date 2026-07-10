@@ -22,6 +22,7 @@ function SubmitButton({ children }: { children: React.ReactNode }) {
 export function OtpForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect_to') ?? '/dashboard';
+  const callbackError = searchParams.get('error');
 
   const [requestState, requestAction] = useActionState(requestOtp, INITIAL_STATE);
   const [verifyState, verifyActionDispatch] = useActionState(verifyOtp, INITIAL_STATE);
@@ -44,11 +45,19 @@ export function OtpForm() {
       <p className="mt-1 text-sm text-muted-foreground">
         {step === 'email'
           ? 'We will email you a one-time code. No password needed.'
-          : `We sent a 6-digit code to ${email}.`}
+          : `We sent an email to ${email}. Enter the code below, or just click the "Sign in" link in that email — either works.`}
       </p>
+
+      {callbackError && (
+        <p role="alert" className="mt-4 text-sm text-destructive">
+          {callbackError}
+        </p>
+      )}
 
       {step === 'email' ? (
         <form action={requestAction} className="mt-6 space-y-4">
+          <input type="hidden" name="redirect_to" value={redirectTo} />
+
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium">
               Email address
