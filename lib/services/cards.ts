@@ -25,7 +25,9 @@ export async function lookupCardByToken(
   });
 
   if (error || !data || data.length === 0) return null;
-  return data[0];
+
+  const [firstResult] = data;
+  return firstResult ?? null;
 }
 
 export async function activateCard(

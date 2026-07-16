@@ -75,7 +75,9 @@ const PERSONAS: Persona[] = [
 
 export function HeroStory() {
   const [activeKey, setActiveKey] = useState('default');
-  const active = PERSONAS.find((p) => p.key === activeKey) ?? PERSONAS[0];
+  // PERSONAS is a non-empty literal array defined above, so indexing its
+  // first element is safe even with noUncheckedIndexedAccess enabled.
+  const active = PERSONAS.find((p) => p.key === activeKey) ?? PERSONAS[0]!;
 
   return (
     <section className="relative overflow-hidden">
