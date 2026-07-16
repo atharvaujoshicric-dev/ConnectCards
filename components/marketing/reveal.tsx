@@ -25,8 +25,9 @@ export function Reveal({ children, className, delayMs = 0 }: RevealProps) {
     if (!node) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
+      (entries) => {
+        const entry = entries[0];
+        if (entry?.isIntersecting) {
           setIsVisible(true);
           observer.disconnect();
         }
