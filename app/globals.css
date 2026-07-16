@@ -1,0 +1,130 @@
+/* app/globals.css
+ * Design tokens for Connect Cards.
+ *
+ * Palette: warm paper background (not the generic AI-cream), near-black
+ * ink, and a metallic gold accent pulled directly from the physical
+ * product's own "Gold" card finish — the brand accent IS a card color,
+ * not an arbitrary choice. Silver, rose gold, and black round out the
+ * card-color system and are reused as semantic tokens where the product
+ * itself is being represented (pricing tiers, card selectors).
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 98%;         /* #FAF9F6 warm paper, cooler than the cliche cream */
+    --foreground: 240 6% 8%;          /* #131316 ink */
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 6% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 8%;
+
+    --primary: 240 6% 8%;
+    --primary-foreground: 40 20% 98%;
+
+    --secondary: 40 10% 94%;
+    --secondary-foreground: 240 6% 8%;
+
+    --muted: 40 10% 94%;
+    --muted-foreground: 240 4% 40%;
+
+    --accent: 39 45% 52%;             /* #C9A24B gold, matches cardmetal.gold */
+    --accent-foreground: 240 6% 8%;
+
+    --destructive: 4 74% 52%;
+    --destructive-foreground: 40 20% 98%;
+
+    --success: 152 55% 32%;
+    --success-foreground: 40 20% 98%;
+
+    --warning: 39 90% 50%;
+    --warning-foreground: 240 6% 8%;
+
+    --border: 40 10% 88%;
+    --input: 40 10% 88%;
+    --ring: 39 45% 52%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 240 6% 6%;          /* #0F0F11 carbon */
+    --foreground: 40 15% 95%;
+
+    --card: 240 6% 9%;
+    --card-foreground: 40 15% 95%;
+
+    --popover: 240 6% 9%;
+    --popover-foreground: 40 15% 95%;
+
+    --primary: 40 15% 95%;
+    --primary-foreground: 240 6% 8%;
+
+    --secondary: 240 5% 14%;
+    --secondary-foreground: 40 15% 95%;
+
+    --muted: 240 5% 14%;
+    --muted-foreground: 240 4% 62%;
+
+    --accent: 39 55% 58%;
+    --accent-foreground: 240 6% 8%;
+
+    --destructive: 4 74% 58%;
+    --destructive-foreground: 40 15% 95%;
+
+    --success: 152 45% 45%;
+    --success-foreground: 240 6% 8%;
+
+    --warning: 39 90% 55%;
+    --warning-foreground: 240 6% 8%;
+
+    --border: 240 5% 16%;
+    --input: 240 5% 16%;
+    --ring: 39 55% 58%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'ss01', 'ss02';
+  }
+
+  ::selection {
+    background-color: hsl(var(--accent) / 0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .card-sheen {
+    background: linear-gradient(
+      120deg,
+      transparent 20%,
+      hsl(var(--accent) / 0.35) 45%,
+      transparent 70%
+    );
+    background-size: 250% 250%;
+  }
+}
