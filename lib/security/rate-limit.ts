@@ -15,11 +15,32 @@ interface RateLimitResult {
 const REDIS_URL = process.env.API_RATE_LIMIT_REDIS_URL;
 const REDIS_TOKEN = process.env.API_RATE_LIMIT_REDIS_TOKEN;
 
+function isConfiguredRedisUrl(value: string | undefined): value is string {
+  if (!value) return false;
+  try {
+    // Guards against placeholder values like "your-upstash-redis-url"
+    // left over from .env.example — these are truthy strings but not
+    // valid URLs, and would otherwise throw deep inside fetch().
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+let hasWarnedAboutMissingConfig = false;
+
 async function redisCommand(command: (string | number)[]): Promise<unknown> {
-  if (!REDIS_URL || !REDIS_TOKEN) {
-    // Fail-open in local/dev environments without Redis configured, but
-    // log loudly so this is never silently the case in production.
-    console.warn('Rate limiting disabled: Upstash Redis env vars not set.');
+  if (!isConfiguredRedisUrl(REDIS_URL) || !REDIS_TOKEN) {
+    // Fail-open when Redis isn't configured (or is misconfigured), but
+    // warn once per server instance rather than on every single call.
+    if (!hasWarnedAboutMissingConfig) {
+      console.warn(
+        'Rate limiting disabled: API_RATE_LIMIT_REDIS_URL/TOKEN are missing or invalid. ' +
+          'Requests are allowed through unrestricted until this is configured.',
+      );
+      hasWarnedAboutMissingConfig = true;
+    }
     return null;
   }
 
