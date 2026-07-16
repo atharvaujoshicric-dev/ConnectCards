@@ -51,6 +51,8 @@ export async function signUpAction(
   });
 
   if (error) {
+    console.error('Supabase signUp error:', error.status, error.message);
+
     const message =
       error.message.toLowerCase().includes('already registered') ||
       error.message.toLowerCase().includes('already exists')
@@ -105,6 +107,8 @@ export async function signInAction(
   });
 
   if (error) {
+    console.error('Supabase signInWithPassword error:', error.status, error.message);
+
     const message = error.message.toLowerCase().includes('email not confirmed')
       ? 'Please confirm your email first — check your inbox for the confirmation link.'
       : 'Incorrect email or password.';
