@@ -9,12 +9,31 @@ import Razorpay from 'razorpay';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database, PlanTier } from '@/types/database.types';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', { apiVersion: '2024-12-18.acacia' });
+// Both SDK clients are created lazily, on first real use, rather than at
+// module load time. Next.js executes route-handler modules during its
+// build-time "collect page data" step, and constructing these clients
+// eagerly would run (and potentially fail on) unset/placeholder env vars
+// during the build itself, before any real request ever comes in.
+let stripeClient: Stripe | null = null;
+function getStripeClient(): Stripe {
+  if (!stripeClient) {
+    stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
+      apiVersion: '2024-12-18.acacia',
+    });
+  }
+  return stripeClient;
+}
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID ?? '',
-  key_secret: process.env.RAZORPAY_KEY_SECRET ?? '',
-});
+let razorpayClient: Razorpay | null = null;
+function getRazorpayClient(): Razorpay {
+  if (!razorpayClient) {
+    razorpayClient = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID ?? '',
+      key_secret: process.env.RAZORPAY_KEY_SECRET ?? '',
+    });
+  }
+  return razorpayClient;
+}
 
 const STRIPE_PRICE_IDS: Record<Exclude<PlanTier, 'free'>, { monthly?: string; yearly?: string }> = {
   pro: {
@@ -50,7 +69,7 @@ export async function createStripeCheckoutSession(
     throw new Error(`no_stripe_price_configured_for_${input.planTier}_${input.billingInterval}`);
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripeClient().checkout.sessions.create({
     mode: 'subscription',
     customer_email: input.customerEmail,
     line_items: [{ price: priceId, quantity: input.seats ?? 1 }],
@@ -83,7 +102,7 @@ export async function createRazorpayOrderCheckout(input: {
   ownerType: 'user' | 'organization';
   ownerId: string;
 }): Promise<{ orderId: string; amount: number; currency: string; keyId: string }> {
-  const order = await razorpay.orders.create({
+  const order = await getRazorpayClient().orders.create({
     amount: input.amountInPaise,
     currency: 'INR',
     receipt: input.receipt,
@@ -115,11 +134,11 @@ export async function cancelSubscriptionAtPeriodEnd(
   if (!subscription) throw new Error('subscription_not_found');
 
   if (subscription.provider === 'stripe') {
-    await stripe.subscriptions.update(subscription.provider_subscription_id, {
+    await getStripeClient().subscriptions.update(subscription.provider_subscription_id, {
       cancel_at_period_end: true,
     });
   } else {
-    await razorpay.subscriptions.cancel(subscription.provider_subscription_id, true);
+    await getRazorpayClient().subscriptions.cancel(subscription.provider_subscription_id, true);
   }
 
   await supabase
